@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 
 // application route
-app.use("/users", userRoute);
+app.use(userRoute);
 
 //database connection with mongoose  
 // mongodb+srv://<db_username>:<db_password>
