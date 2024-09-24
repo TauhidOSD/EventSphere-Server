@@ -8,6 +8,21 @@ const getAllUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+const getAUser = async (req, res, next) => {
+  try {
+
+    const query = { _id: req.params.id };
+    console.log(query);
+    const result = await User.findOne(query);
+
+    res.send(result);
+
+  } catch (err) {
+    next(err);
+  }
+}
 // create user
 const createUser = async (req, res) => {
   // try {
@@ -19,23 +34,23 @@ const createUser = async (req, res) => {
   // }
   const user = req.body;
   try {
-      const isExists = await User.findOne({email:user?.email});
-      if(isExists){
-          return res.send({
-              success: true,
-              message : "User is already exists",
-          })
-      }
-      const result = await  User.create(user)
-      res.send({
-          success: true,
-          message : "Created successfull",
+    const isExists = await User.findOne({ email: user?.email });
+    if (isExists) {
+      return res.send({
+        success: true,
+        message: "User is already exists",
       })
+    }
+    await User.create(user)
+    res.send({
+      success: true,
+      message: "Created successfull",
+    })
   } catch (error) {
-      res.send({
-          success: false,
-          message : error.message,
-      })
+    res.send({
+      success: false,
+      message: error.message,
+    })
   }
 };
 // update user
@@ -53,18 +68,31 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// delete user
-const deleteUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedUser = await User.findByIdAndDelete(id);
-    if (!deletedUser) {
-      res.status(404).json({ message: "User not found" });
-    }
-    res.status(200).json({ message: "Deleted Successful" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
 
-module.exports = { getAllUser, createUser, updateUser, deleteUser };
+// Delete a User
+const deleteUserById = async (req, res) => {
+  try {
+
+    const id = req?.params?.id;
+    const result = await User.findByIdAndDelete(id);
+    if (!result) {
+      return res.status(404).send({
+        success: false,
+        message: "Not found"
+      })
+    };
+
+    res.send({
+      success: true,
+      message: "Delete successfull",
+    })
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "wrong info"
+    })
+  }
+}
+
+
+module.exports = { getAllUser, createUser, getAUser, updateUser, deleteUserById };
