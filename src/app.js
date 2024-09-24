@@ -11,10 +11,11 @@ const app = express();
 app.use(express.json());
 
 // application route
-app.use("/users", userRoute);
+app.use(userRoute);
 
-//database connection with mongoose 
-const uri=`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.e0fsll4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+//database connection with mongoose  
+// mongodb+srv://<db_username>:<db_password>
+const uri=`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.qnwtz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 mongoose
   .connect(uri,{dbName:process.env.DB_NAME})
   .then(console.log(`connected to mongodb database with mongoose`))
