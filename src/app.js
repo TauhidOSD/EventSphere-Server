@@ -3,7 +3,8 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const port = process.env.PORT || 5000;
 
-const userRoute = require( "./routes/users/user.route.js" );
+
+const eventRoute = require( "./routes/events/event.route.js" );
 
 
 // middleware
@@ -11,7 +12,8 @@ const app = express();
 app.use(express.json());
 
 // application route
-app.use(userRoute);
+
+app.use('/events',eventRoute);
 
 //database connection with mongoose  
 // mongodb+srv://<db_username>:<db_password>
