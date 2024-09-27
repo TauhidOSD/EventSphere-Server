@@ -1,4 +1,5 @@
 const Event = require("../../models/Event");
+const { ObjectId } = require('mongodb');
 
 const getAllEvent = async (req, res) => {
     try {
@@ -10,19 +11,27 @@ const getAllEvent = async (req, res) => {
   };
   
   
-  const getSingleEvent = async (req, res, next) => {
-    try {
+ 
+ 
+  const getSingleEvent = async (req, res) => {
+      try {
+          const query = { _id: new ObjectId(req.params.id) }; 
+          // console.log(query);
+          const result = await Event.findOne(query);
+          
+          if (!result) {
+              return res.status(404).send({ message: "Event Not Found" });
+          }
   
-      const query = { _id: req.params.id };
-      console.log(query);
-      const result = await Event.findOne(query);
+          res.send(result);
   
-      res.send(result);
-  
-    } catch (err) {
-      next(err);
-    }
+      } catch (err) {
+          console.log(err);
+          res.status(500).send({ message: "Server Error" });
+      }
   }
+  
+
   // create user
   const createEvent = async (req, res) => {
 
@@ -41,4 +50,4 @@ const getAllEvent = async (req, res) => {
       })
     }
   };
-  module.exports = { getAllEvent,createEvent};
+  module.exports = { getAllEvent,createEvent,getSingleEvent};
