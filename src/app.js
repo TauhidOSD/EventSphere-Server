@@ -5,6 +5,7 @@ const port = process.env.PORT || 5000;
 
 
 const eventRoute = require( "./routes/events/event.route.js" );
+const userRoute = require( "./routes/user/user.route.js" );
 
 
 // middleware
@@ -14,6 +15,7 @@ app.use(express.json());
 // application route
 
 app.use('/events',eventRoute);
+app.use('/',userRoute);
 
 //database connection with mongoose  
 // mongodb+srv://<db_username>:<db_password>
@@ -27,7 +29,7 @@ mongoose
 
 // Home route
 app.get("/", (req, res) => {
-  res.send("Blog app Home");
+  res.send("Event Sphare app Home");
 });
 // health route
 app.get("/health", (req, res) => {
