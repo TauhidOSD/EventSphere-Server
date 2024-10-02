@@ -3,14 +3,24 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
+    name: String,
+    surname: String,
+    email:String,
+    phone: String,
+    city: String,
+    country: String,
+    gender: String,
+    skills: String, 
+    specialty: String,
     email: {
       type: String,
-      required: true,
+      unique: true
     },
+    gender: {
+      type: String,
+      enum: ['Male', 'Female'] // Restricting gender values to specific options
+    },
+    specialty: String,
     password: {
       type: String,
       required: true,
