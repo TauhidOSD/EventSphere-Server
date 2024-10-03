@@ -5,7 +5,7 @@ const { getSingleUser, createUser, updateUser } = require("../../controller/even
 
 router.get("/user/:email", getSingleUser);
 router.post("/user", createUser);
-router.put("/user/:id", updateUser);
+router.put("/user/:email", updateUser);
 
 
 module.exports = router;
