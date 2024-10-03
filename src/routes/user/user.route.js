@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getSingleUser, createUser, updateUser } = require("../../controller/event/user.controller");
+const { getSingleUser, createUser, updateUser } = require("../../controller/user/user.controller");
 
 
 router.get("/user/:email", getSingleUser);
