@@ -1,17 +1,32 @@
 const express = require("express");
 require("dotenv").config();
 const mongoose = require("mongoose");
+const cors = require('cors');
 const port = process.env.PORT || 5000;
 
-const userRoute = require( "./routes/users/user.route.js" );
+
+const eventRoute = require( "./routes/events/event.route.js" );
+const userRoute = require( "./routes/user/user.route.js" );
+const orderRoute = require( "./routes/order/order.route.js" );
 
 
 // middleware
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",  "http://localhost:3001",
+    ],
+    credentials: true,
+  })
+);
 
 // application route
-app.use(userRoute);
+
+app.use('/events',eventRoute);
+app.use('/',userRoute);
+app.use('/',orderRoute);
 
 //database connection with mongoose  
 // mongodb+srv://<db_username>:<db_password>
@@ -25,7 +40,7 @@ mongoose
 
 // Home route
 app.get("/", (req, res) => {
-  res.send("Blog app Home");
+  res.send("Event Sphare app Home");
 });
 // health route
 app.get("/health", (req, res) => {
