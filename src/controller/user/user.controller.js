@@ -99,5 +99,20 @@ const getOrganizerRequest= async (req, res) => {
   }
 };
 
+// Get user data by id 
+const getUserRollUpdatedId = async (req, res) => {
+  try {
+    const id = req.params.id
+    const user = await User.findOne({_id: id}).select({role:1, organizer: 1})
+    if (user) {
+      res.status(200).send(user)
+    }else{
+      res.status(400).send({message:"User Not Found"})
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-module.exports = { getSingleUser, createUser, updateUser, beOrganizer, getOrganizerRequest }; 
+
+module.exports = { getSingleUser, createUser, updateUser, beOrganizer, getOrganizerRequest, getUserRollUpdatedId}; 
