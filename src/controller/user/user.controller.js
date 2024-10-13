@@ -88,6 +88,16 @@ const beOrganizer = async (req, res) => {
   }
 };
 
+// Get All Organizer Requested User
+const getOrganizerRequest= async (req, res) => {
+  try {
+    const query = { organizer: false };
+    const result = await User.find(query);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 
-module.exports = { getSingleUser, createUser, updateUser, beOrganizer }; 
+module.exports = { getSingleUser, createUser, updateUser, beOrganizer, getOrganizerRequest }; 
