@@ -37,9 +37,6 @@ const createUser = async (req, res) => {
 // update user
 const updateUser = async (req, res) => {
   try {
-console.log(req.body);
-console.log(req.params.email);
-
     await  User.updateOne(
         { email: req.params.email},  
         {
@@ -61,4 +58,36 @@ console.log(req.params.email);
     res.status(500).json({ message: error.message });
   }
 };
-module.exports = { getSingleUser, createUser, updateUser }; 
+
+// Post OrganizerRequest
+const beOrganizer = async (req, res) => {
+  try {
+    const updateResult = await User.updateOne(
+      { email: req.params.email },
+      {
+        $set: {
+          companyName: req.body.companyName,
+          location: req.body.location,
+          email: req.body.email,
+          phone: req.body.phone,
+          socialPlatform: req.body.socialPlatform,
+          country: req.body.country,
+          CEOEmail: req.body.CEOEmail,
+          organizer: false,
+        }
+      },
+      { upsert: false, runValidators: true }
+    );
+    
+    // Send the update result as a response
+    res.status(200).json(updateResult);
+    console.log('Update result:', updateResult);
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+module.exports = { getSingleUser, createUser, updateUser, beOrganizer }; 

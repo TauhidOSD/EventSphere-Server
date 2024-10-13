@@ -12,6 +12,11 @@ const userSchema = new mongoose.Schema(
     gender: String,
     skills: String, 
     specialty: String,
+    CEOEmail: String,
+    socialPlatform: String,
+    location: String,
+    companyName: String,
+    organizer: Boolean,
     email: {
       type: String,
       unique: true
