@@ -141,5 +141,40 @@ const userRollUpdate = async (req, res) =>{
     res.status(500).json({ message: error.message });
   }
 }
+// Organizing Request Cancel
+const organizerRequestCancel = async (req, res) =>{
+  try{
+    const id = req.params.id
+    const updatedUserRoll = await User.updateOne({_id: id}, {
+      $set:{
+        organizer: true,
+      }
+    });
+    if (updateUser) {
+      res.status(200).send({
+        success: true , 
+        message: "Request Rejected Successfully! ", 
+        data: updatedUserRoll})
+    }
+    else{
+      res.status(404).send({
+        success: false,
+        message: "User Role Not Updated"
+      })
+    }
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
-module.exports = { getSingleUser, createUser, updateUser, beOrganizer, getOrganizerRequest, getUserRollUpdatedId, userRollUpdate}; 
+module.exports = { 
+  getSingleUser, 
+  createUser, 
+  updateUser, 
+  beOrganizer, 
+  getOrganizerRequest, 
+  getUserRollUpdatedId, 
+  userRollUpdate,
+  organizerRequestCancel
+}; 
