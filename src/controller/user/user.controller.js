@@ -114,5 +114,32 @@ const getUserRollUpdatedId = async (req, res) => {
   }
 };
 
+//* Put Request User Roll Update 
+const userRollUpdate = async (req, res) =>{
+  try{
+    const id = req.params.id
+    const updatedUserRoll = await User.updateOne({_id: id}, {
+      $set:{
+        role: "organizer",
+        organizer: true,
+      }
+    });
+    if (updateUser) {
+      res.status(200).send({
+        success: true , 
+        message: "User Role Updated Successfully ", 
+        data: updatedUserRoll})
+    }
+    else{
+      res.status(404).send({
+        success: false,
+        message: "User Role Not Updated"
+      })
+    }
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
-module.exports = { getSingleUser, createUser, updateUser, beOrganizer, getOrganizerRequest, getUserRollUpdatedId}; 
+module.exports = { getSingleUser, createUser, updateUser, beOrganizer, getOrganizerRequest, getUserRollUpdatedId, userRollUpdate}; 
