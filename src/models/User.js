@@ -4,21 +4,29 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema(
   {
     name: String,
-    surname: String,
-    email:String,
+    email: String,
     phone: String,
     city: String,
     country: String,
     gender: String,
-    skills: String, 
+    skills: String,
     specialty: String,
+    followers: [{ type: String }],
+    review: [
+      {
+        name: { type: String, required: true },
+        email: { type: String, required: true },
+        photo: { type: String }, // Optional if not required
+        message: { type: String, required: true }
+      }
+    ],
     email: {
       type: String,
       unique: true
     },
     gender: {
       type: String,
-      enum: ['Male', 'Female'] // Restricting gender values to specific options
+      // enum: ['Male', 'Female'] // Restricting gender values to specific options
     },
     specialty: String,
     password: {
@@ -37,4 +45,3 @@ const userSchema = new mongoose.Schema(
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
- 
