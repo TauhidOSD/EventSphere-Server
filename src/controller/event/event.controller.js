@@ -79,17 +79,9 @@ const getAllEvent = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
 const getSingleEvent = async (req, res) => {
   try {
     const query = { _id: new ObjectId(req.params.id) };
-    // console.log(query);
     const result = await Event.findOne(query);
 
     if (!result) {
@@ -97,30 +89,27 @@ const getSingleEvent = async (req, res) => {
     }
 
     res.send(result);
-
   } catch (err) {
     console.log(err);
     res.status(500).send({ message: "Server Error" });
   }
-}
+};
 
-
-// create user
+// Create Event
 const createEvent = async (req, res) => {
-
   const event = req.body;
   try {
-
-    await Event.create(event)
+    await Event.create(event);
     res.send({
       success: true,
       message: "Created successfully",
-    })
+    });
   } catch (error) {
     res.send({
       success: false,
       message: error.message,
-    })
+    });
   }
 };
+
 module.exports = { getAllEvent, createEvent, getSingleEvent };
