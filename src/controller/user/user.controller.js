@@ -11,8 +11,10 @@ const getSingleUser = async (req, res) => {
 
     res.send(result);
 
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    res.send({
+      message: error.message,
+    })
   }
 }
 // create user
@@ -37,7 +39,7 @@ const createUser = async (req, res) => {
 // update user
 const updateUser = async (req, res) => {
   try {
-
+    console.log(req.body)
     const result = await User.updateOne(
       { email: req?.params?.email },
       {
@@ -45,10 +47,34 @@ const updateUser = async (req, res) => {
           name: req.body.name,
           phone: req.body.phone,
           city: req.body.city,
+          birth: req.body.birth,
           country: req.body.country,
           gender: req.body.gender,
           skills: req.body.skills,
           specialty: req.body.specialty,
+          aboutMe: req.body.aboutMe,
+        }
+      },
+      { upsert: false, runValidators: true }
+    )
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+// update user Review
+const updateUserReviw = async (req, res) => {
+  try {
+    console.log(req?.params?.email)
+    console.log(req.body)
+    const result = await User.updateOne(
+      { email: req?.params?.email },
+      {
+        $set: {
+          review: req.body,
         }
       },
       { upsert: false, runValidators: true }
@@ -91,4 +117,4 @@ const addedFollower = async (req, res) => {
   }
 };
 
-module.exports = { getSingleUser, createUser, updateUser, addedFollower }; 
+module.exports = { getSingleUser, createUser, updateUser, addedFollower, updateUserReviw }; 
