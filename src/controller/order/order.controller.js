@@ -10,6 +10,22 @@ const getAllOrder = async (req, res) => {
   }
 };
 
+// get order by gmail
+const getOrderById = async (req, res) => {
+  try {
+    const gmail = req.params.gmail
+    const orders = await Order.find({eventOrganizerEmail: gmail})
+    if (orders) {
+      res.status(200).send(orders);
+    }
+    else{
+      res.status(404).send({message: "Booking Data Not Found"})
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 // create user
 const createOrder = async (req, res) => {
@@ -20,7 +36,7 @@ const createOrder = async (req, res) => {
     await Order.create(order);
     res.send({
       success: true,
-      message: "Created successfull",
+      message: "Created successful",
     });
   } catch (error) {
     res.send({
@@ -29,4 +45,4 @@ const createOrder = async (req, res) => {
     });
   }
 };
-module.exports = { getAllOrder, createOrder};
+module.exports = { getAllOrder, createOrder, getOrderById};
