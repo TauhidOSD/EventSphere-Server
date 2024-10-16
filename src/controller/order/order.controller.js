@@ -1,4 +1,6 @@
 const Order = require("../../models/Order");
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 const { ObjectId } = require("mongodb");
 
 // All order get korar api
@@ -46,21 +48,54 @@ const refundRequest = async (req, res) => {
 
 
 // create user
-const createOrder = async (req, res) => {
-  const order = req.body;
-  console.log(order);
+const createPayment = async (req, res) => {
+  if (req.method === 'POST') {
+      try {
+          const { price } = req.body;
+          if (!price) {
+              return res.status(400).json({ error: "Price is required" });
+          }
 
-  try {
-    await Order.create(order);
-    res.send({
-      success: true,
-      message: "Created successfull",
-    });
-  } catch (error) {
-    res.send({
-      success: false,
-      message: error.message,
-    });
+          const paymentIntent = await stripe.paymentIntents.create({
+              amount: parseInt(price * 100), // amount in cents
+              currency: 'usd',
+              payment_method_types: ['card'],
+          });
+
+          res.status(200).json({
+              clientSecret: paymentIntent.client_secret,
+              success: true,
+              message: "Payment intent created successfully",
+          });
+      } catch (error) {
+          console.error("Payment Intent Error:", error.message);
+          res.status(500).json({ error: error.message });
+      }
+  } else {
+      res.setHeader('Allow', 'POST');
+      res.status(405).end('Method Not Allowed');
   }
 };
-module.exports = { getAllOrder, createOrder, myAllOrder, refundRequest };
+
+
+ // payment intent
+ const createOrder= async (req, res) => {
+  const order = req.body;
+    console.log(order,"order api");
+  
+    try {
+      const result = await Order.create(order)
+      res.send({
+        success: true,
+        paymentResult: { insertedId: result._id },
+        message: "Order created successfully",
+    });
+    } catch (error) {
+      res.send({
+        success: false,
+        message: error.message,
+      });
+    }
+}
+
+module.exports = { getAllOrder, createOrder,createPayment, myAllOrder, refundRequest };
