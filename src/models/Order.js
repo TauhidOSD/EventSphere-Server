@@ -45,7 +45,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   selectSeatNames: {
-    type: String,
+    type: Array,
     required: true,
   },
   transitionId: {
@@ -53,7 +53,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   eventDate: {
-    type: Date,  // Changed from String to Date
+    type: Date,  
     required: true,
   },
   refundRequested: {
