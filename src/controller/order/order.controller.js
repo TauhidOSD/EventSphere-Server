@@ -26,7 +26,6 @@ const getOrderById = async (req, res) => {
   }
 };
 
-
 // create user
 const createOrder = async (req, res) => {
   const order = req.body;

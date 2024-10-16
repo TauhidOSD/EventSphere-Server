@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema(
     location: String,
     companyName: String,
     organizer: Boolean,
+    block: Boolean,
     email: {
       type: String,
       unique: true

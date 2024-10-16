@@ -1,5 +1,17 @@
 const User = require("../../models/User");
 
+// Get All User Filtering By User roll: user && roll: organizer
+const getAllUser = async (req, res) => {
+  try {
+    // Define the query to filter users by their role
+    const query = { role: { $in: ['user', 'organizer'] } };
+    const result = await User.find(query);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getSingleUser = async (req, res) => {
   try {
 
@@ -24,7 +36,7 @@ const createUser = async (req, res) => {
     await User.create(user)
     res.send({
       success: true,
-      message: "Created successfull",
+      message: "Created Successfully",
     })
   } catch (error) {
     res.send({
@@ -141,6 +153,32 @@ const userRollUpdate = async (req, res) =>{
     res.status(500).json({ message: error.message });
   }
 }
+//* Put Request User block: true
+const blockUser = async (req, res) =>{
+  try{
+    const id = req.params.id
+    const blockedUser = await User.updateOne({_id: id}, {
+      $set:{
+        block: true,
+      }
+    });
+    if (blockedUser) {
+      res.status(200).send({
+        success: true , 
+        message: "User Role Updated Successfully ", 
+        data: blockedUser})
+    }
+    else{
+      res.status(404).send({
+        success: false,
+        message: "User Role Not Updated"
+      })
+    }
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 // Organizing Request Cancel
 const organizerRequestCancel = async (req, res) =>{
   try{
@@ -169,12 +207,14 @@ const organizerRequestCancel = async (req, res) =>{
 }
 
 module.exports = { 
+  getAllUser,
   getSingleUser, 
   createUser, 
   updateUser, 
   beOrganizer, 
   getOrganizerRequest, 
-  getUserRollUpdatedId, 
+  getUserRollUpdatedId,
+  blockUser, 
   userRollUpdate,
   organizerRequestCancel
 }; 

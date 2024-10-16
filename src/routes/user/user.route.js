@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { getSingleUser, createUser, updateUser, beOrganizer, getOrganizerRequest, getUserRollUpdatedId, userRollUpdate, organizerRequestCancel } = require("../../controller/user/user.controller");
+const { getSingleUser, createUser, updateUser, beOrganizer, getOrganizerRequest, getUserRollUpdatedId, userRollUpdate, organizerRequestCancel, getAllUser, blockUser } = require("../../controller/user/user.controller");
 
 
+router.get("/user", getAllUser);
 router.get("/user/:email", getSingleUser);
 router.get("/userRollUpdated/:id", getUserRollUpdatedId);
 router.put("/userRollUpdated/:id", userRollUpdate);
+router.put("/blockedUser/:id", blockUser);
 router.put("/organizingRequestCancel/:id", organizerRequestCancel);
 router.post("/user", createUser);
 router.put("/user/:email", updateUser);
