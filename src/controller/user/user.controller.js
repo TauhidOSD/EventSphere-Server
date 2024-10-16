@@ -153,6 +153,32 @@ const userRollUpdate = async (req, res) =>{
     res.status(500).json({ message: error.message });
   }
 }
+//* Put Request User block: true
+const blockUser = async (req, res) =>{
+  try{
+    const id = req.params.id
+    const blockedUser = await User.updateOne({_id: id}, {
+      $set:{
+        block: true,
+      }
+    });
+    if (blockedUser) {
+      res.status(200).send({
+        success: true , 
+        message: "User Role Updated Successfully ", 
+        data: blockedUser})
+    }
+    else{
+      res.status(404).send({
+        success: false,
+        message: "User Role Not Updated"
+      })
+    }
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 // Organizing Request Cancel
 const organizerRequestCancel = async (req, res) =>{
   try{
@@ -188,6 +214,7 @@ module.exports = {
   beOrganizer, 
   getOrganizerRequest, 
   getUserRollUpdatedId,
+  blockUser, 
   userRollUpdate,
   organizerRequestCancel
 }; 
