@@ -12,8 +12,9 @@ const getAllEvent = async (req, res) => {
     city,
     startDate,
     endDate,
-    limit = 6, 
-    page = 1, 
+    search,
+    limit = 6,
+    page = 1,
   } = req.query;
 
   const filters = {};
@@ -48,6 +49,12 @@ const getAllEvent = async (req, res) => {
       filters.dateTime.$lte = new Date(endDate);
     }
   }
+  if (search) {
+    filters.$or = [
+      { title: { $regex: search, $options: 'i' } }, 
+      { description: { $regex: search, $options: 'i' } }, 
+    ];
+  }
 
   // Price filters
   if (minimumPrice || maximumPrice) {
@@ -65,14 +72,14 @@ const getAllEvent = async (req, res) => {
 
     // Finding filtered events with pagination
     const events = await Event.find(filters)
-      .skip((currentPage - 1) * itemsPerPage) 
-      .limit(itemsPerPage); 
+      .skip((currentPage - 1) * itemsPerPage)
+      .limit(itemsPerPage);
 
     res.json({
-      totalEvents, 
-      currentPage, 
-      totalPages: Math.ceil(totalEvents / itemsPerPage), 
-      events, 
+      totalEvents,
+      currentPage,
+      totalPages: Math.ceil(totalEvents / itemsPerPage),
+      events,
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
