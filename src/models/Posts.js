@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 
 // Define the schema for user
@@ -64,13 +65,7 @@ const postSchema = new mongoose.Schema({
   }
 });
 
-
 const Posts = mongoose.model("Posts", postSchema);
 
 module.exports = Posts;
-
-
-
-
-
 
