@@ -40,14 +40,18 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  // totalTickets: {
-  //   type: Number,
-  //   required: true,
-  // },
-  // transitionId: {
-  //   type: Number,
-  //   required: true,
-  // },
+  totalTickets: {
+    type: Number,
+    required: true,
+  },
+  selectSeatNames: {
+    type: String,
+    required: true,
+  },
+  transitionId: {
+    type: String,
+    required: true,
+  },
   eventDate: {
     type: Date,  // Changed from String to Date
     required: true,
