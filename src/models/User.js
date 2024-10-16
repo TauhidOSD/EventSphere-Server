@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
     gender: String,
     skills: String,
     birth: String,
+    block: Boolean,
     aboutMe: String,
     specialty: String,
     followers: [{ type: String }],
