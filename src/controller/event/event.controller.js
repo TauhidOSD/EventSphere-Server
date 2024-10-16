@@ -102,6 +102,27 @@ const getSingleEvent = async (req, res) => {
   }
 };
 
+const getBookedSeatUpdate= async (req, res) => {
+  try {
+      const { eventId, newBookedSeats } = req.body;
+
+      // Update the events collection to add the new booked seats
+      const result = await Event.updateOne(
+          { _id: new ObjectId(eventId) },
+          { $addToSet: { bookedSeats: { $each: newBookedSeats } } }
+      );
+
+      if (result.modifiedCount > 0) {
+          res.send({ success: true, message: 'Booked seats updated successfully' });
+      } else {
+          res.send({ success: false, message: 'No changes were made' });
+      }
+  } catch (error) {
+      console.error('Error updating booked seats:', error);
+      res.status(500).send({ success: false, message: 'Server error' });
+  }
+};
+
 // Create Event
 const getMyEvent = async (req, res) => {
   try {
@@ -163,4 +184,4 @@ const createEvent = async (req, res) => {
 };
 
 // module.exports = { getAllEvent, createEvent, getSingleEvent };
-module.exports = { getAllEvent, createEvent, getSingleEvent, getMyEvent, getCategoryEvent };
+module.exports = { getAllEvent, createEvent, getSingleEvent, getMyEvent, getCategoryEvent ,getBookedSeatUpdate};
