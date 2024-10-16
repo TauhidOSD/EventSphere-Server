@@ -1,4 +1,6 @@
+const Event = require("../../models/Event");
 const Order = require("../../models/Order");
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const { ObjectId } = require("mongodb");
@@ -81,10 +83,16 @@ const createPayment = async (req, res) => {
  // payment intent
  const createOrder= async (req, res) => {
   const order = req.body;
+  const id=req.params.id
+  console.log(id)
     console.log(order,"order api");
   
     try {
       const result = await Order.create(order)
+      // const seatUpdate = await Event.updateOne(
+      //   { _id: new ObjectId(id) },
+      //   { $set: { followers: updateFollowArrayCurrentuser } }
+      // );
       res.send({
         success: true,
         paymentResult: { insertedId: result._id },
