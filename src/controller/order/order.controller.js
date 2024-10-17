@@ -49,7 +49,7 @@ const refundRequest = async (req, res) => {
 }
 
 
-// create user
+// create Payment
 const createPayment = async (req, res) => {
   if (req.method === 'POST') {
       try {
@@ -79,6 +79,22 @@ const createPayment = async (req, res) => {
   }
 };
 
+const getSingleOrder = async (req, res) => {
+  try {
+    const { transitionId } = req.params;
+    const query = { transitionId: transitionId }; 
+    const result = await Order.findOne(query);
+
+    if (!result) {
+      return res.status(404).send({ message: "Booking data not found" });
+    }
+
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Server Error" });
+  }
+};
 
  // payment intent
  const createOrder= async (req, res) => {
@@ -106,4 +122,4 @@ const createPayment = async (req, res) => {
     }
 }
 
-module.exports = { getAllOrder, createOrder,createPayment, myAllOrder, refundRequest };
+module.exports = { getAllOrder, createOrder,createPayment, myAllOrder, refundRequest,getSingleOrder };
