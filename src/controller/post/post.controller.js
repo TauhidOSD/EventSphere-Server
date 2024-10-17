@@ -61,13 +61,32 @@ const addedReact = async (req, res) => {
   }
 }
 
+// Update Post api
+const updatePost = async (req, res) => {
+  const id = req.params.id;
+  const  updatePostObj  = req.body;
+  console.log(id, updatePostObj)
+  try {
+    const resp = await Posts.updateOne(
+      { _id: new ObjectId(id) }, {
+      $set: {
+        content: updatePostObj?.content
+      }
+    }, { upsert: false, runValidators: true })
+    res.status(200).json(resp);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
 
 // Delete a post
 const deletePost = async (req, res) => {
   const id = req.params.id;
   console.log(id)
   try {
-    const resp = await Posts.deleteOne({_id: new ObjectId(id)})
+    const resp = await Posts.deleteOne({ _id: new ObjectId(id) })
     res.status(200).json(resp);
   }
   catch (error) {
@@ -88,4 +107,4 @@ const createPost = async (req, res) => {
 };
 
 
-module.exports = { getAllPost, getUserPosts, createPost, addedComment, addedReact, deletePost };
+module.exports = { getAllPost, getUserPosts, createPost, addedComment, addedReact, deletePost, updatePost };
