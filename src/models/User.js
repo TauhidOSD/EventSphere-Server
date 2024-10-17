@@ -11,6 +11,12 @@ const userSchema = new mongoose.Schema(
     gender: String,
     skills: String,
     specialty: String,
+    CEOEmail: String,
+    socialPlatform: String,
+    location: String,
+    companyName: String,
+    organizer: Boolean,
+    block: Boolean,
     followers: [{ type: String }],
     review: [
       {
@@ -35,7 +41,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String, // Specify the type
-      enum: ["user", "admin"],
+      enum: ["user", "admin", "organizer"],
       default: "user",
     }
   },
