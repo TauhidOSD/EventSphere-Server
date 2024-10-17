@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { getSingleUser, createUser, updateUser, beOrganizer, getOrganizerRequest, getUserRollUpdatedId, userRollUpdate, organizerRequestCancel, getAllUser, blockUser } = require("../../controller/user/user.controller");
+const { getSingleUser, createUser, updateUser, beOrganizer, getOrganizerRequest, getUserRollUpdatedId, userRollUpdate, organizerRequestCancel, getAllUser, blockUser, addedFollower } = require("../../controller/user/user.controller");
+
 
 
 router.get("/user", getAllUser);
@@ -13,6 +14,7 @@ router.post("/user", createUser);
 router.put("/user/:email", updateUser);
 router.put("/beOrganizer/:email", beOrganizer);
 router.get("/organizerRequest", getOrganizerRequest)
+router.put("/userAddedFollower", addedFollower);
 
 
 module.exports = router;

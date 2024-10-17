@@ -2,44 +2,69 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
   eventImage: {
-    type: String,  
+    type: String,
   },
   eventName: {
     type: String,
-    required: true
+    required: true,
   },
-  totalTickets: {
-    type: Number,
-    required: true
-  },
-  eventPlace: {
+  eventId: {
     type: String,
-    required: true
+    required: true,
   },
-  status: {
+  eventOrganizerEmail: {
     type: String,
-    enum: ['Pending', 'Completed', 'Rejected'],  
-    default: 'Pending'
+    required: true,
+  },
+  eventOrganizerName: {
+    type: String,
+    required: true,
+  },
+  eventOrganizerPhoto: {
+    type: String,
+    required: true,
+  },
+  bookedUserName: {
+    type: String,
+    required: true,
+  },
+  bookedUserPhoto: {
+    type: String,
+    required: true,
+  },
+  bookedUserEmail: {
+    type: String,
+    required: true,
   },
   amount: {
     type: Number,
-    required: true
+    required: true,
   },
-  date: {
+  totalTickets: {
+    type: Number,
+    required: true,
+  },
+  selectSeatNames: {
+    type: Array,
+    required: true,
+  },
+  transitionId: {
     type: String,
-    required: true
+    required: true,
   },
-  refund: {
+  eventDate: {
+    type: Date,  
+    required: true,
+  },
+  refundRequested: {
     type: String,
-    enum: ['Yes', 'No'],
-    default: 'No'
+    enum: ['Requested', 'NotRequested'],  // Adjusted to make sense for a refund request
+    default: 'NotRequested',
   },
-  orderdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref:"User"
-  },
-});
+},
+{ timestamps: true });
 
 const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;
+
