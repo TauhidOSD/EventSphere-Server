@@ -1,4 +1,5 @@
 const Order = require("../../models/Order");
+const Event = require("../../models/Event");
 
 
 const getAllOrder = async (req, res) => {
@@ -44,4 +45,22 @@ const createOrder = async (req, res) => {
     });
   }
 };
-module.exports = { getAllOrder, createOrder, getOrderById};
+
+const metricsForAdminChart = async (req, res) =>{
+  try {
+    const events = await Event.find({});
+    const orders = await Order.find({});
+    
+    const metrics = {
+      totalEvents: events.length,
+      totalSales: orders.reduce((acc, order) => acc + order.amount, 0),
+      totalTickets: orders.reduce((acc, order) => acc + order?.totalTickets, 0),
+      newOrganizers: 5 // Example static data or calculate from your data
+    };
+    
+    res.json(metrics);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+module.exports = { getAllOrder, createOrder, getOrderById, metricsForAdminChart};

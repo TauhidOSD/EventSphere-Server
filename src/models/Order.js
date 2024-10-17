@@ -8,6 +8,10 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  totalTickets: {
+    type: Number,
+    required: true
+  },
   eventPlace: {
     type: String,
     required: true

@@ -159,7 +159,7 @@ const blockUser = async (req, res) =>{
     const id = req.params.id
     const blockedUser = await User.updateOne({_id: id}, {
       $set:{
-        block: true,
+        block: req.body.block,
       }
     });
     if (blockedUser) {
