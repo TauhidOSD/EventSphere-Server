@@ -166,6 +166,11 @@ const getCategoryEvent = async (req, res) => {
   }
 }
 
+// get event by email
+const getEventsByEmail = async () =>{
+  
+}
+
 // create user
 const createEvent = async (req, res) => {
   const event = req.body;
@@ -173,7 +178,7 @@ const createEvent = async (req, res) => {
     await Event.create(event);
     res.send({
       success: true,
-      message: "Created successfully",
+      message: "Created Successful",
     });
   } catch (error) {
     res.send({
