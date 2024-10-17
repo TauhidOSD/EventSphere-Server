@@ -45,7 +45,7 @@ const createOrder = async (req, res) => {
     });
   }
 };
-
+// 
 const metricsForAdminChart = async (req, res) =>{
   try {
     const events = await Event.find({});
@@ -63,4 +63,81 @@ const metricsForAdminChart = async (req, res) =>{
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
-module.exports = { getAllOrder, createOrder, getOrderById, metricsForAdminChart};
+// monthly-metrics
+const monthlyMetrics = async (req, res) =>{
+  try {
+    const currentYear = new Date().getFullYear();
+    
+    const eventMetrics = await Event.aggregate([
+      {
+        $match: {
+          updatedAt: {
+            $gte: new Date(`${currentYear}-01-01`),
+            $lt: new Date(`${currentYear + 1}-01-01`)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: { $month: "$updatedAt" },
+          totalEvents: { $sum: 1 },
+          newOrganizers: { $addToSet: "$organizer.email" }
+        }
+      },
+      {
+        $project: {
+          month: "$_id",
+          totalEvents: 1,
+          newOrganizers: { $size: "$newOrganizers" }
+        }
+      },
+      { $sort: { month: 1 } }
+    ]);
+
+    const orderMetrics = await Order.aggregate([
+      {
+        $match: {
+          updatedAt: {
+            $gte: new Date(`${currentYear}-01-01`),
+            $lt: new Date(`${currentYear + 1}-01-01`)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: { $month: "$updatedAt" },
+          ticketSales: { $sum: "$totalTickets" },
+          totalSales: { $sum: "$amount" }
+        }
+      },
+      {
+        $project: {
+          month: "$_id",
+          ticketSales: 1,
+          totalSales: 1
+        }
+      },
+      { $sort: { month: 1 } }
+    ]);
+
+    // Combine the results
+    const monthlyMetrics = Array.from({ length: 12 }, (_, i) => {
+      const month = i + 1;
+      const eventData = eventMetrics.find(e => e.month === month) || { totalEvents: 0, newOrganizers: 0 };
+      const orderData = orderMetrics.find(o => o.month === month) || { ticketSales: 0, totalSales: 0 };
+      
+      return {
+        name: new Date(currentYear, i).toLocaleString('default', { month: 'short' }),
+        totalEvents: eventData.totalEvents,
+        newOrganizers: eventData.newOrganizers,
+        ticketSales: orderData.ticketSales,
+        totalSales: orderData.totalSales
+      };
+    });
+
+    res.json(monthlyMetrics);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching monthly metrics", error: error.message });
+  }
+}
+module.exports = { getAllOrder, createOrder, getOrderById, metricsForAdminChart, monthlyMetrics};
