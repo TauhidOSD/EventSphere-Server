@@ -168,7 +168,7 @@ const userRollUpdate = async (req, res) =>{
         organizer: true,
       }
     });
-    if (updateUser) {
+    if (updatedUserRoll) {
       res.status(200).send({
         success: true , 
         message: "User Role Updated Successfully ", 
