@@ -265,6 +265,11 @@ const organizerRequestCancel = async (req, res) =>{
   }
 }
 
+
+//Email Subscribe
+
+
+
 module.exports = { 
   getAllUser,
   getSingleUser, 
